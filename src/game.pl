@@ -1,0 +1,10 @@
+:- include('display.pl').
+:- include('menu.pl').
+:- include('utils.pl').
+
+:- use_module(library(lists)).
+:- use_module(library(clpfd)).
+:- use_module(library(sets)).
+
+play :-
+	menu.
