@@ -8,18 +8,18 @@ menu :-
 	optionHandler(Input).
 
 readInput(Input) :-
-	get_char(Input).
+	get_code(Input).
 
-optionHandler('1') :-
+optionHandler(49) :-
 	playingOptions.
 
-optionHandler('2') :-
+optionHandler(50) :-
 	showRules.
 
-optionHandler('3').
+optionHandler(51).
 
 optionHandler(_) :-
-	write('Invalid input'),
+	invalidInput,
 	menu.
 	
 
@@ -32,10 +32,15 @@ playingOptions :-
 showRules :-
 	%clearScreen,
 	write('*rules*'), nl,
+	backMenu.
+
+backMenu :-
 	write('Press enter to go back to the main menu'), nl,
-	readInput(_),
-	readInput(Input),
+	get_code(Input),
 	goBack(Input).
 
-goBack('a') :- menu.
-goBack(_) :- write('not going back').
+goBack(10) :- menu.
+
+goBack(_) :- backMenu.
+
+invalidInput :- write('Invalid input'), nl.
