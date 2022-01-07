@@ -5,6 +5,27 @@
 
 clearScreen :- write('\33\[2J').
 
+samurais([s,s,s,s,s,s,s,s]).
+
+ninjas([n,n,n,n,n,n,n,n]).
+
+board([
+	samurais,
+	[],
+	[],
+	[],
+	[],
+	[],
+	[],
+	ninjas
+]).
+
 displayBoard :-
 	clearScreen,
+	write(board),
 	write('FIRST SENTENCE').
+
+
+
+
+
