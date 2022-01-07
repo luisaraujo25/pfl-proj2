@@ -1,4 +1,5 @@
 menu :-
+	%clearScreen,
 	write('***SHI***'), nl,
 	write('1. PLAY'), nl,
 	write('2. RULES'), nl,	
@@ -19,14 +20,22 @@ optionHandler('3').
 
 optionHandler(_) :-
 	write('Invalid input'),
-	clearScreen,
 	menu.
 	
 
 playingOptions :-
+	%clearScreen,
 	write('1. USER VS USER'), nl,
 	write('2. USER VS COMPUTER'), nl,
 	write('3. COMPUTER VS COMPUTER'), nl.
 
 showRules :-
-	write('*rules*').
+	%clearScreen,
+	write('*rules*'), nl,
+	write('Press enter to go back to the main menu'), nl,
+	readInput(_),
+	readInput(Input),
+	goBack(Input).
+
+goBack('a') :- menu.
+goBack(_) :- write('not going back').
