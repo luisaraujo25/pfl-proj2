@@ -8,3 +8,6 @@
 
 play :-
 	menu.
+
+start(PLAYER1, PLAYER2) :-
+	boardSize(Size).

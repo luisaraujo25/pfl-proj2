@@ -1,0 +1,2 @@
+boardSize(8).
+

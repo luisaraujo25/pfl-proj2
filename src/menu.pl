@@ -5,20 +5,20 @@ menu :-
 	write('2. RULES'), nl,	
 	write('3. EXIT'), nl,
 	readInput(Input),
-	optionHandler(Input).
+	menuOptionHandler(Input).
 
 readInput(Input) :-
 	get_code(Input).
 
-optionHandler(49) :-
+menuOptionHandler(49) :-
 	playingOptions.
 
-optionHandler(50) :-
+menuOptionHandler(50) :-
 	showRules.
 
-optionHandler(51).
+menuOptionHandler(51).
 
-optionHandler(_) :-
+menuOptionHandler(_) :-
 	invalidInput,
 	menu.
 	
@@ -27,7 +27,17 @@ playingOptions :-
 	%clearScreen,
 	write('1. USER VS USER'), nl,
 	write('2. USER VS COMPUTER'), nl,
-	write('3. COMPUTER VS COMPUTER'), nl.
+	write('3. COMPUTER VS COMPUTER'), nl,
+	readInput(Input),
+	playingOptionHandler(Input).
+
+playingOptionHandler(49) :- start(user,user).
+
+playingOptionHandler(50) :- start(user,computer).
+
+playingOptionHandler(51) :- start(computer1,computer2).
+
+playingOptionHandler(_) :- invalidInput.
 
 showRules :-
 	%clearScreen,
@@ -38,6 +48,8 @@ backMenu :-
 	write('Press enter to go back to the main menu'), nl,
 	get_code(Input),
 	goBack(Input).
+
+%10 is the code for enter
 
 goBack(10) :- menu.
 
