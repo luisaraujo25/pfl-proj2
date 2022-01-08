@@ -1,6 +1,7 @@
 :- include('display.pl').
 :- include('menu.pl').
 :- include('utils.pl').
+:- include('board.pl').
 
 :- use_module(library(lists)).
 :- use_module(library(clpfd)).

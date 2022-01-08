@@ -1,22 +1,36 @@
-samurais([s,s,s,s,s,s,s,s]).
+printPiece(samurai) :- write(' S ').
 
-ninjas([n,n,n,n,n,n,n,n]).
+printPiece(ninja) :- write(' N ').
 
-board([
-	samurais,
-	[],
-	[],
-	[],
-	[],
-	[],
-	[],
-	ninjas
-]).
+printPiece(none) :- write('   ').
 
-displayBoard :-
+printPiece(e) :- write(' E ').
+
+printRow(Piece) :-
+	boardSize(Size),
+	printRowAux(Piece, Size), nl.
+
+printRowAux(Piece,0).
+printRowAux(Piece, N) :-
+	N>0,
+	N1 is N-1,
+	printRowAux(Piece,N1),
+	printPiece(Piece).
+
+printBoard :-
 	clearScreen,
-	write(board),
-	write('FIRST SENTENCE').
+	boardSize(Size),
+	printRow(samurai), nl,
+	printEmpty(Size-2),
+	printRow(ninja).
+
+printEmpty(0).
+printEmpty(N) :-
+	N>0,
+	N1 is N-1,
+	printEmpty(N1),
+	printRow(none), nl.
+
 
 
 
