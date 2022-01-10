@@ -1,10 +1,10 @@
+clearScreen :- write('\33\[2J').
+
 printPiece(samurai) :- write(' S ').
 
 printPiece(ninja) :- write(' N ').
 
 printPiece(none) :- write('   ').
-
-printPiece(e) :- write(' E ').
 
 printRow(Piece) :-
 	boardSize(Size),
@@ -30,8 +30,6 @@ printEmpty(N) :-
 	N1 is N-1,
 	printEmpty(N1),
 	printRow(none), nl.
-
-
 
 
 
