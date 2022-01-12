@@ -6,6 +6,10 @@ piece(samurai, 'S').
 piece(ninja, 'N').
 piece(none, ' ').
 
+%addPiece
+
+%movePiece
+
 %board
 createBoard(ListofList) :-
     boardSize(Size),
@@ -23,3 +27,9 @@ createRow([Head | Tail], Size) :-
 
 %getValue(Board, Row, Column, Value) :-
 %    nth0(Row, Board, )
+
+
+getPiece(_, Piece, 0, _).
+getPiece(Board, Piece, X, Y) :-
+    N is X-1,
+    getPiece(Board,Piece,N,Y).

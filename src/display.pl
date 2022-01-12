@@ -6,6 +6,8 @@ printPiece(ninja) :- write(' N ').
 
 printPiece(none) :- write('   ').
 
+printPiece(e):- write(' e ').
+
 printRow(Piece) :-
 	boardSize(Size),
 	printRowAux(Piece, Size), nl.
