@@ -1,19 +1,20 @@
-clearScreen :- write('\33\[2J').
+:- include('utils.pl').
+:- include('board.pl').
 
-printPiece(samurai) :- write(' S ').
+printPiece(white) :- write(' W ').
 
-printPiece(ninja) :- write(' N ').
+printPiece(black) :- write(' B ').
 
-printPiece(none) :- write('   ').
+printPiece(none)  :- write('   ').
 
-printPiece(e):- write(' e ').
+%printPiece(e):- write(' e ').
 
 printRow(Piece) :-
 	boardSize(Size),
 	printRowAux(Piece, Size), nl.
 
 printRowAux(Piece,0).
-printRowAux(Piece, N) :-
+printRowAux(Piece,N) :-
 	N>0,
 	N1 is N-1,
 	printRowAux(Piece,N1),
@@ -22,9 +23,11 @@ printRowAux(Piece, N) :-
 printBoard :-
 	clearScreen,
 	boardSize(Size),
-	printRow(samurai), nl,
+	printRow(white),
+	printRow(white),
 	printEmpty(Size-2),
-	printRow(ninja).
+	printRow(black),
+	printRow(black).
 
 printEmpty(0).
 printEmpty(N) :-

@@ -1,9 +1,9 @@
-%the board size in this game is always 8
-boardSize(8).
+%the board size in this game is always 9
+boardSize(9).
 
 %Pieces
-piece(samurai, 'S').
-piece(ninja, 'N').
+piece(white, 'W').
+piece(black, 'B').
 piece(none, ' ').
 
 %addPiece
@@ -13,7 +13,7 @@ piece(none, ' ').
 %board
 createBoard(ListofList) :-
     boardSize(Size),
-    N is Size-1,
+    N is Size-1, 
     createBoard(N),
     createRow(List, Size),
     write(List).
