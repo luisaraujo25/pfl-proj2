@@ -10,5 +10,5 @@
 play :-
 	menu.
 
-start(PLAYER1, PLAYER2) :-
-	boardSize(Size).
+%start(PLAYER1, PLAYER2) :-
+%	boardSize(Size).
