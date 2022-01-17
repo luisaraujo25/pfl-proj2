@@ -49,12 +49,8 @@ createRow([Head | Tail], Size) :-
     write(Head), nl,
     createRow(Tail, Size-1).
 
-%getValue(Board, Row, Column, Value) :-
-%    nth0(Row, Board, )
-
-
-getPiece(_, Piece, 0, _).
-getPiece(Board, Piece, X, Y) :-
-    N is X-1,
-    getPiece(Board,Piece,N,Y).
+%Board is the list of lists
+getPiece(Board, X, Y, Piece) :-
+    nth1(X, Board, List).
+    nth1(Y-1, List, Piece).
 

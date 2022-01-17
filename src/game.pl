@@ -7,7 +7,8 @@
 :- include('board.pl').
 :- include('display.pl').
 :- include('menu.pl').
-:- include ('bot.pl').
+:- include('bot.pl').
+:- include('input.pl').
 
 play :-
 	menu.
