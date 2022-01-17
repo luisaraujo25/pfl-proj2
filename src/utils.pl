@@ -1,12 +1,53 @@
+%0 stands for none (pieces)
+%1 stands for white
+%2 stands for black
+
 %X starts counting on 1
+%setPiece ([[1, 0], [0, 1]], 2, 1, 2, N)
 setPiece(Board, X, Y, Piece, NewBoard) :-
-    getColumn(Y, Board, Column).
-    select(Y, Column, Piece, NewColumn).
+    Aux is Y-1,
+    getRow(Board, Aux, Row), %this is working -> [1, 0]
+    replace(X, Row, Piece, NewRow),
+    replace(Y, NewRow, Piece, NewBoard). 
+
 
 %Board is the list of lists
 getPiece(Board, X, Y, Piece) :-
     nth0(X, Board, List),
     nth0(Y, List, Piece).
 
-getColumn(Board, Num, Column) :-
-    nth0(Num, Board, Column).
+getRow(Board, Num, Row) :-
+    nth0(Num, Board, Row).
+
+
+replace(Index, [H|T], Elem, NewList) :-
+    nth0(Index,)
+    append(N,[Elem2|T],L),
+	append(N,T,F).
+
+%[1,2,3,4,5]
+%[1,2] Acc
+%[3 | 4,5]]  -> 
+
+%append([1,2],[3], Lista)
+%append(Lista,[4,5])
+
+
+%BOARD EXEMPLO: [[1, 0, 2], [0, 2, 2], [0, 0, 1]]
+%BOARD EXEMPLO2: [[1,0],[0,1]]
+% N = [[w,n],[n,b]]
+
+
+/*
+[
+    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [2, 2, 2, 2, 2, 2, 2, 2, 2],
+    [2, 2, 2, 2, 2, 2, 2, 2, 2],
+]
+*/

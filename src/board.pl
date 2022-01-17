@@ -49,8 +49,5 @@ createRow([Head | Tail], Size) :-
     write(Head), nl,
     createRow(Tail, Size-1).
 
-%Board is the list of lists
-getPiece(Board, X, Y, Piece) :-
-    nth1(X, Board, List).
-    nth1(Y-1, List, Piece).
+
 

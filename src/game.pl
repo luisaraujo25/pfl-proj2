@@ -91,3 +91,27 @@ asciitonum(NumCode, Num) :-
 asciitonum(NumCode, Num) :-
 	between(97, 105, NumCode),
 	Num is NumCode - 96.
+
+
+
+%game_over(+State, -Winner) 
+%game will be over, if all the slots on the top two rows are filled with white pieces
+% or if all the slots on the bottom two rows are filled with white pieces
+game_over(State, Winner):-
+	isRowFull(Board, 0, W),
+	isRowFull(Board, 1, W),
+	Winner is white.
+
+% will check if all the slots on the bottom two rows are filled with black
+game_over(State, Winner) :-
+	isRowFull(Board, 8, B),
+	isRowFull(Board, 9, B),
+	Winner is black.
+
+game_over(State, Winner) :-
+	Winner is none.
+
+%isRowFull(+Board, +Row, +Piece)
+isRowFull(Board, Row, Piece) :-
+	between(1, 9, X),
+	getPiece(Board, X, Row, Piece),
