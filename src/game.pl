@@ -2,31 +2,32 @@
 :- use_module(library(clpfd)).
 :- use_module(library(sets)).
 :- use_module(library(between)).
-% :- include('board.pl').
+:- use_module(library(random)).
+
+:- include('board.pl').
+:- include('display.pl').
+:- include('menu.pl').
+:- include ('bot.pl').
 
 play :-
 	menu.
 
-<<<<<<< HEAD
-%start(PLAYER1, PLAYER2) :-
-%	boardSize(Size).
-=======
 % start(PLAYER1, PLAYER2) :-
 % 	boardSize(Size).
 
 % valid_moves(Piece, Board) :-
 
 
-choose_move(Board, Color, MoveBoard):-
-	write('Choose coordinates'), nl, write('X: '), get_code(InputX), nl, write('Y: '), get_code(InputY), nl,
-	asciitonum(InputX, X),
-	asciitonum(InputY, Y),
-	(member(piece(Color, Y, X), Board) ->
-		select(piece(Color, X, Y), Board, MoveBoard) % Escolher o move,
-		;
-		write('Move not possible'),
-		choose_move(Board, Color, MoveBoard)
-	).
+%choose_move(Board, Color, MoveBoard):-
+%	write('Choose coordinates'), nl, write('X: '), get_code(InputX), nl, write('Y: '), get_code(InputY), nl,
+%	asciitonum(InputX, X),
+%	asciitonum(InputY, Y),
+%	(member(piece(Color, Y, X), Board) ->
+%		select(piece(Color, X, Y), Board, MoveBoard) % Escolher o move,
+%		;
+%		write('Move not possible'),
+%		choose_move(Board, Color, MoveBoard)
+%	).
 
 	%   (
 %     N_X is X + 1, N_Y is Y + 2;
@@ -89,4 +90,3 @@ asciitonum(NumCode, Num) :-
 asciitonum(NumCode, Num) :-
 	between(97, 105, NumCode),
 	Num is NumCode - 96.
->>>>>>> a7652deadc107a05b6154a14de270f5393a65f76
