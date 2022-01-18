@@ -20,10 +20,16 @@ getRow(Board, Num, Row) :-
     nth0(Num, Board, Row).
 
 
-replace(Index, [H|T], Elem, NewList) :-
-    nth0(Index,)
-    append(N,[Elem2|T],L),
-	append(N,T,F).
+replace(Index, List, Elem, NewList) :-
+    Aux is Index-1,
+    nth0(Aux, List, OldElem),
+    write(OldElem),
+    append(N,[OldElem|T],_),
+    append(N,[Elem|T],NewList).
+
+replace2(OLD,LIST,NEW,FINAL) :-
+	append(AUX,[OLD|T],LIST),
+	append(AUX,[NEW|T],FINAL).
 
 %[1,2,3,4,5]
 %[1,2] Acc
