@@ -13,64 +13,75 @@
 play :-
 	menu.
 
+% gameState(TurnNumber, Board).
+
+% initial_state(+Size, -GameState) % Do we need size??
+initial_state(gameState(TurnNumber, Board)) :-
+	TurnNumber is 1,
+	createBoard(Board).
+
+play_game:-
+    initial_state(GameState), %--> Iniciar a Board
+    display_game(GameState),
+    game_cycle(GameState).
+
+game_cycle(gameState(TurnNumber, Board)):-
+    game_over(GameState, Winner), !,
+    congratulate(Winner). %% ??
+    
+game_cycle(gameState(TurnNumber, Board)):-
+	(	(TurnNumber mod 2) =:= 1 ->
+		Player is white
+		;
+		Player is black
+	),
+    choose_move(GameState, Player, Move),
+    move(GameState, Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
+    display_game(NewGameState), !,
+    game_cycle(NewGameState).
+
+
 % start(PLAYER1, PLAYER2) :-
 % 	boardSize(Size).
 
-% valid_moves(Piece, Board) :-
+% move(+GameState, +Move, -NewGameState)
+move(gamestate( TurnNumber, Board), move(Xi, Yi, Xf, Yf), NewGameState):-
+	valid_moves(gamestate( TurnNumber, Board), ListMoves),
+	( member(Move, ListMoves) ->
+		replace ....
+		;
+		write('Not valid Move')
+	).
 
 
-%choose_move(Board, Color, MoveBoard):-
-%	write('Choose coordinates'), nl, write('X: '), get_code(InputX), nl, write('Y: '), get_code(InputY), nl,
-%	asciitonum(InputX, X),
-%	asciitonum(InputY, Y),
-%	(member(piece(Color, Y, X), Board) ->
-%		select(piece(Color, X, Y), Board, MoveBoard) % Escolher o move,
-%		;
-%		write('Move not possible'),
-%		choose_move(Board, Color, MoveBoard)
-%	).
-
-	%   (
-%     N_X is X + 1, N_Y is Y + 2;
-%     N_X is X - 1, N_Y is Y + 2;
-%     N_X is X + 1, N_Y is Y - 2;
-%     N_X is X - 1, N_Y is Y - 2;
-%     N_X is X + 2, N_Y is Y + 1;
-%     N_X is X - 2, N_Y is Y + 1;
-%     N_X is X + 2, N_Y is Y - 1;
-%     N_X is X - 2, N_Y is Y - 1
-%   ),
-
-initial_board(Board) :-
-    findall(Piece, initial(Piece), Board).
-
-initial(piece(white, 1, 1)).
-initial(piece(white, 2, 1)).
-initial(piece(white, 3, 1)).
-initial(piece(white, 4, 1)).
-initial(piece(white, 5, 1)).
-initial(piece(white, 6, 1)).
-initial(piece(white, 7, 1)).
-initial(piece(white, 8, 1)).
-initial(piece(white, 9, 1)).
-
-
-possible_move(Board, Color, Endboard) :- % Seleciona todas as Boards possiveis tendo conta qualquer movimento possivel de qualquer peça do jogador
-  	select(piece(Color, X, Y), Board, Motionboard),
+% valid_moves(+GameState, -ListOfMoves)
+valid_moves(gameState(TurnNumber, Board), ListOfMoves) :- % Seleciona todas as Boards possiveis tendo conta qualquer movimento possivel de qualquer peça do jogador
+  	% select(Color, Board, Motionboard),
+	% get_playerturn(GameState, Color),
+	% get_board(GameState, Board),
+	(	(TurnNumber mod 2) =:= 1 ->
+		Player is white
+		;
+		Player is black
+	),
+	getElement(Board, X, Y, Player),
 	getcoordsMove(X, Y, N_X, N_Y),
 	N_X > 0,
 	N_X < 10,
 	N_Y > 0,
 	N_Y < 10,
-	(   vacant(N_X, N_Y, Board) ->
-    	place(piece(Color, N_X, N_Y), Motionboard, Endboard)
-	).
+	findall(move(X,Y, N_X, N_Y), vacant(N_X, N_Y, Board), vacant(N_X, N_Y, Board)).
+	% (   
+		
+	% 	vacant(N_X, N_Y, Board) ->
+    % 	ListOfMoves = [move(X,Y, N_X, N_Y)| ListOfMoves] % ????????
+	% ).
     % not valid move? 
 
 vacant(X, Y, Board) :-
   between(1, 9, X),
   between(1, 9, Y),
-  \+(member(piece(_, X, Y), Board)).
+  getElement(Board, X, Y, piece(none)). %% ????
 
 getcoordsMove(IniX, IniY, X, Y) :- X is IniX + 1, Y is IniY +2.
 getcoordsMove(IniX, IniY, X, Y) :- X is IniX - 1, Y is IniY +2.
@@ -81,8 +92,6 @@ getcoordsMove(IniX, IniY, X, Y) :- X is IniX - 2, Y is IniY +1.
 getcoordsMove(IniX, IniY, X, Y) :- X is IniX + 2, Y is IniY -1.
 getcoordsMove(IniX, IniY, X, Y) :- X is IniX - 2, Y is IniY -1.
 
-place(Piece, MotionBoard, EndBoard) :-
-	EndBoard = [Piece | MotionBoard].
 
 asciitonum(NumCode, Num) :-
 	between(1, 9, NumCode),
@@ -92,6 +101,8 @@ asciitonum(NumCode, Num) :-
 	between(97, 105, NumCode),
 	Num is NumCode - 96.
 
+% choose_move(+GameState, +Level, -Move)
+% choose_move(gamestate(TurnNumber, Board), Level, Move).
 
 
 %game_over(+State, -Winner) 
@@ -115,3 +126,4 @@ game_over(State, Winner) :-
 isRowFull(Board, Row, Piece) :-
 	between(1, 9, X),
 	getPiece(Board, X, Row, Piece),
+
