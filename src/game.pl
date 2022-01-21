@@ -64,10 +64,14 @@ playerAskMove(Player, Board, move(Xi, Yi, Xf, Yf)) :-
 		;
 		Player is black
 	),
-	write('What piece you want to move? (write coordinates)'), nl, write('X: '), get_code(Xi), nl, write('Y: '), get_code(Yi), nl,
+	write('What piece you want to move? (write coordinates)'), nl, write('X: '), get_code(Xinput), nl, write('Y: '), get_code(Yinput), nl,
+	asciitonum(Xinput, Xi),
+	asciitonum(Yinput, Yi),
 	getPiece(Board, Xi, Yi, piece(Color)),
 	(	Color =:= Player ->
-		write('Where you want to move it to? (write coordinates)'), nl, write('X: '), get_code(Xf), nl, write('Y: '), get_code(Yf), nl,
+		write('Where you want to move it to? (write coordinates)'), nl, write('X: '), get_code(Xfinput), nl, write('Y: '), get_code(Yfinput), nl,
+		asciitonum(Xfinput, Xf),
+		asciitonum(Yfinput, Yf),
 		valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves),
 		( 	\+member(move(Xi, Yi, Xf, Yf), ListOfMoves) ->
 			write('Not a possible move!'), playerAskMove(Player, Board, move(Xi, Yi, Xf, Yf))
@@ -170,5 +174,5 @@ game_over(_, Winner) :-
 %isRowFull(+Board, +Row, +Piece)
 isRowFull(Board, Row, Piece) :-
 	between(1, 9, X),
-	getPiece(Board, X, Row, Piece),
+	getPiece(Board, X, Row, Piece).
 
