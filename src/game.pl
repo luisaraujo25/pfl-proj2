@@ -10,7 +10,6 @@
 :- include('bot.pl').
 :- include('input.pl').
 :- include('utils.pl').
-:- include('tests.pl').
 
 play :-
 	menu.
@@ -32,8 +31,8 @@ play_game:-
     game_cycle(GameState).
 
 getTurnColor(2, none).
-getTurnColor(1, white).
-getTurnColor(0, black).
+getTurnColor(Num, white) :- Num mod 2 =:= 1.
+getTurnColor(Num, black) :- Num mod 2 =:= 0.
 
 % game_cycle(+GameState)
 game_cycle(gameState(TurnNumber, Board, _, _)):-
@@ -57,22 +56,29 @@ game_cycle(gameState(TurnNumber, Board, player(Race1), player(Race2))):-
 			choose_move(gameState(TurnNumber, Board, _, _), 1, Move)
 		)
 	),
+	getTurnColor(TurnNumber, Player),
+	getMove(Player, Race1, Race2),
     move(gameState(TurnNumber, Board, player(Race1), player(Race2)), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
     display_game(NewGameState), !,
     game_cycle(NewGameState).
 % 
 
+getMove(white, human, _) :-
+	playerAskMove(Player, Board, Move).
 
+getMove(black, _, human) :-
+	playerAskMove(Player, Board, Move).
 
+getMove(white, computer, _) :-
+	choose_move(gameState(TurnNumber, Board, _, _), 1, Move).
+
+getMove(black, _, computer) :-
+	choose_move(gameState(TurnNumber, Board, _, _), 1, Move).
 
 
 % playerAskMove(+GameState, -move(Xi, Yi, Xf, Yf))
 playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
-	(	(TurnNumber mod 2) =:= 1 ->
-		getTurnColor(1, Player)
-		;
-		getTurnColor(0, Player)
-	),
+	getTurnColor(TurnNumber, Player),
 	write('What piece you want to move? (write coordinates)'), nl, write('X: '), get_code(Xinput), nl, write('Y: '), get_code(Yinput), nl,
 	asciitonum(Xinput, Xi),
 	asciitonum(Yinput, Yi),
@@ -95,11 +101,7 @@ playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
 % move(+GameState, +Move, -NewGameState)
 % moves the Piece on the actual Board, defining the new state of the game
 move(gamestate(TurnNumber, Board, P1, P2), move(Xi, Yi, Xf, Yf), gameState(NewTurnNumber, NewBoard, P1, P2)):-
-	(	(TurnNumber mod 2) =:= 1 ->
-		getTurnColor(1, Player)
-		;
-		getTurnColor(0, Player)
-	),
+	getTurnColor(TurnNumber, Player),
 	valid_moves(gamestate( TurnNumber, Board, _, _), ListMoves),
 	( member(move(Xi, Yi, Xf, Yf), ListMoves) ->
 		setPiece(Board, Xi, Yi, piece(none), Board2),
@@ -113,11 +115,7 @@ move(gamestate(TurnNumber, Board, P1, P2), move(Xi, Yi, Xf, Yf), gameState(NewTu
 % valid_moves(+GameState, -ListOfMoves)
 % Seleciona todas os Moves possiveis tendo conta qualquer movimento possivel de qualquer peça do jogador
 valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves) :- 
-	(	(TurnNumber mod 2) =:= 1 ->
-		getTurnColor(1, Player)
-		;
-		getTurnColor(0, Player)
-	),
+	getTurnColor(TurnNumber, Player),
 	getPiece(Board, X, Y, piece(Player)),
 	getcoordsMove(X, Y, N_X, N_Y),
 	N_X > 0,
@@ -175,4 +173,19 @@ isRowFull(Board, Row, Piece) :-
 	boardSize(Size-1),
 	between(1, Size-1, X),
 	getPiece(Board, X, Row, Piece).
+
+display_game(gameState(_, Board, _, _)) :-
+	write('   a  b  c  d  f  g  h  i  '), nl,
+	display_lines(Board, 1).
+
+display_lines([], _).
+display_lines([Head|Tail], N) :- write(N), write(' '), display_line(Head), nl, N1 is N +1, display_lines(Tail, N1).
+
+display_line([]).
+display_line([Piece|Tail]) :- printPiece(Piece), display_line(Tail).
+
+% ^Testing
+getGameState(1, gameState(_, [[piece(white), piece(black), piece(none), piece(white)],[piece(none), piece(black), piece(none), piece(white)]], _, _)).
+
+
 
