@@ -1,45 +1,48 @@
-%The board size in this game is always 9
+%The board size in this game is always 9 (?)
 boardSize(9).
 
-%Users have the option of picking different board sizes
-chooseBoardSize(Size) :- 
-    write('Choose Board Size'),
-    get_char(Size).
 
-
+%initial_board/1 -> initializes the board with pieces in their initial position
+%initial_board(-Board) 
 initial_board(Board) :-
     boardSize(Size),
     createBoard(EmptyBoard),
-    fillBoard(EmptyBoard, Board).
+    fillBoard(EmptyBoard, Size, Board).
 
 %Row number 0 is the first row in the board.
-fillBoard(EmptyBoard, Board) :-
-    boardSize(Size),
-    getRow(Board, 0, Row),
-    replace(0, Board, FilledRow, NewBoard)
-    fillRows(Row, Piece, NewRow).
+%Using S since X and Y start at 1. So if we think about a for loop it would be for(i=1;i<3,i++) and it would only replace 2 elements...
+%this way we have for(i=1,i<4;i++)
+%fillBoard(+EmptyBoard,+Size, -Board)
+fillBoard(EmptyBoard, Size, Board) :-
+    S is Size+1,
+    fillRow(EmptyBoard, 0, 1, 1, S, Board).
 
 %fillRow(+Board, +Piece, -NewBoard).
-% fillRow(_, 0, Row).
-fillRow(Board, X, Y, Piece, NewBoard) :-
-    setPiece(Board, X, Aux, N),
-    Aux is Y-1,
-    fillRow(Board, X, Aux, Piece, NewBoard).
+fillRow(Board, _, _, Size, Size, Board).
+fillRow(Board, Piece, X, Acc, Size, NewBoard) :-
+    setPiece(Board, X, Acc, Piece, NewB),
+    Acc1 is Acc+1,
+    fillRow(NewB, Piece, X, Acc1, Size, NewBoard).
 
 
 %board
+%createBoard/1 -> Creates an "empty" board (list of lists) filled with nulls
+%createBoard(-ListOfLists)
 createBoard(ListOfLists) :-
     boardSize(Size),
-    createBoard(ListOfList, Size, Size, []).
+    createBoard(ListOfLists, Size, Size, []).
 
-createBoard(ListOfList, 0, _, ListOfList) :- !.
-createBoard(ListOfList, Size, RowSize, Aux) :-
+%createBoard(-ListOfLists, +Size, +Size, +Aux)
+createBoard(ListOfLists, 0, _, ListOfLists) :- !.
+createBoard(ListOfLists, Size, RowSize, Aux) :-
     createRow(Row,RowSize),
     append(Aux, [Row], Aux1),
     N is Size-1,
-    createBoard(ListOfList, N, RowSize, Aux1).
+    createBoard(ListOfLists, N, RowSize, Aux1).
 
 %rows
+%createRow/1 -> Creates an empty row (filles with nulls)
+%createRow(-Row,+Size).
 createRow(_,0) :- !.
 createRow([Head | Tail], Size) :-
     Head = null,

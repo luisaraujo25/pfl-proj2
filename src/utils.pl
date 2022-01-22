@@ -3,7 +3,7 @@
 %2 stands for black
 
 %Returns the new board after a move is made
-%TESTE: setPiece ([[1, 0], [0, 1]], 2, 1, 2, N)
+%Test available in tests.pl
 %setPiece(+Board, +X, +Y, +Piece, -NewBoard)
 setPiece(Board, X, Y, Piece, NewBoard) :-
     AuxY is Y-1,
@@ -11,15 +11,6 @@ setPiece(Board, X, Y, Piece, NewBoard) :-
     getRow(Board, AuxX, Row), %this is working -> [1, 0]
     replace(AuxY, Row, Piece, NewRow),
     replace(AuxX, Board, NewRow, NewBoard). 
-
-%testing set piece:
-%X=3 AND Y=2: CHANGE THE ELEMENT 8 TO 0
-%getRow([[1,2,3],[4,5,6],[7,8,9]],2,Row).
-%Result: Row = [7,8,9].
-%replace(1,[7,8,9],0,NewRow).
-%result: NewRow = [7,0,9].
-%replace(2,[[1,2,3],[4,5,6],[7,8,9]],[7,0,9],NewBoard).
-%Result: NewBoard = [[1,2,3],[4,5,6],[7,0,9]].
 
 %Row is a list, Board is a list of lists and Num is row's index in board
 %replaceRow(+Board, +Num, +Row, -NewBoard)

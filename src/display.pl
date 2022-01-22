@@ -1,7 +1,7 @@
 printPiece(piece(white)) :- write(' W ').
 
 printPiece(piece(black)) :- write(' B ').
-
+testSetPiece 
 printPiece(piece(none))  :- write('   ').
 
 %printPiece(e):- write(' e ').
