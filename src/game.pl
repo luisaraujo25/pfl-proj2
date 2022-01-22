@@ -9,6 +9,7 @@
 :- include('menu.pl').
 :- include('bot.pl').
 :- include('input.pl').
+:- include('utils.pl').
 
 play :-
 	menu.

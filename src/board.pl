@@ -32,11 +32,6 @@ initial(piece(white, 9, 1)).
 initial_board(Board) :-
     findall(Piece, initial(Piece), Board).
 
-
-%addPiece
-
-%movePiece
-
 %board
 createBoard(ListOfLists) :-
     boardSize(Size),
@@ -48,10 +43,6 @@ createBoard(ListOfList, Size, RowSize, Aux) :-
     append(Aux, [Row], Aux1),
     N is Size-1,
     createBoard(ListOfList, N, RowSize, Aux1).
-
-%get row
-%depois de ter a coluna juntar isso à lista de listas
-
 
 %rows
 createRow(_,0) :- !.
@@ -68,11 +59,11 @@ createRowP(Piece, [Head|Tail], Size) :-
     S1 is Size -1,
     createRowP(Piece, Tail, S1).
 
-getRow3(Piece, Row) :-
-    nth0(12, Row, Piece).
+% getRow3(Piece, Row) :-
+%     nth0(12, Row, Piece).
 
-getElemenFRow(Num) :-
-    createRowP(piece(white), Row, 9),
-    getRow3(Num, Row).
+% getElemenFRow(Num) :-
+%     createRowP(piece(white), Row, 9),
+%     getRow3(Num, Row).
 
 

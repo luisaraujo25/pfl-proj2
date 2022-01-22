@@ -19,24 +19,18 @@ getPiece(Board, X, Y, Piece) :-
 getRow(Board, Num, Row) :-
     nth0(Num, Board, Row).
 
-
+%Replaces the item in a list List with index Index by a new item Elem.
 replace(Index, List, Elem, NewList) :-
-    Aux is Index-1,
-    nth0(Aux, List, OldElem),
-    write(OldElem),
-    append(N,[OldElem|T],_),
-    append(N,[Elem|T],NewList).
+    replaceAux(Index, List, Elem, [], NewList).
 
-replaceOne(Index, List, Elem, NewList) :-
-    getListUntilIndex(Index,List,Aux,PreList,0)
-.
+replaceAux(0, [H|T], Elem, List, FinalList) :-
+    append(List, [Elem], Aux),
+    append(Aux,T, FinalList).
 
-getListUntilIndex(Index, _, PreList, PreList, Index).
-getListUntilIndex(Index, [H|T], Aux, PreList, Acc) :-
-    Acc1 is Acc+1,
-    append([H], Aux,PreList),
-    getListUntilIndex(Index, T, PreList, Acc1)
-.
+replaceAux(Index, [H|T], Elem, Aux, NewList) :-
+    N is Index-1,
+    append(Aux, [H], Aux1),
+    replaceAux(N, T, Elem, Aux1, NewList).
 
 %[1,2,3,4,5]
 %[1,2] Acc
