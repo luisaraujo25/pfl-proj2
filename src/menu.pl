@@ -37,9 +37,9 @@ playingOptions :-
 	%readInput(Input),
 	%playingOptionHandler(Input).
 
-playingOptionHandler(49) :- start(user,user).
+playingOptionHandler(49) :- start(human,human).
 
-playingOptionHandler(50) :- start(user,computer).
+playingOptionHandler(50) :- start(human,bot).
 
 playingOptionHandler(51) :- start(computer, user).
 

@@ -1,36 +1,31 @@
-%the board size in this game is always 9
+%The board size in this game is always 9
 boardSize(9).
+
+%Users have the option of picking different board sizes
 chooseBoardSize(Size) :- 
     write('Choose Board Size'),
     get_char(Size).
 
-%Pieces
-% piece(white, 'W').
-% piece(black, 'B').
-% piece(none, ' ').
-% initial(piece(white, X, 1)) :-
-%     between(1, 8, X).
-
-initial(piece(white, 1, 1)).
-initial(piece(white, 2, 1)).
-initial(piece(white, 3, 1)).
-initial(piece(white, 4, 1)).
-initial(piece(white, 5, 1)).
-initial(piece(white, 6, 1)).
-initial(piece(white, 7, 1)).
-initial(piece(white, 8, 1)).
-initial(piece(white, 9, 1)).
-
-
-% initial(piece(white, X, 2)) :-
-%     between(1, 9, X).
-% initial(piece(black, X, 9)) :-
-%     between(1, 9, X).
-% initial(piece(black, X, 8)) :-
-%     between(1, 9, X).
 
 initial_board(Board) :-
-    findall(Piece, initial(Piece), Board).
+    boardSize(Size),
+    createBoard(EmptyBoard),
+    fillBoard(EmptyBoard, Board).
+
+%Row number 0 is the first row in the board.
+fillBoard(EmptyBoard, Board) :-
+    boardSize(Size),
+    getRow(Board, 0, Row),
+    replace(0, Board, FilledRow, NewBoard)
+    fillRows(Row, Piece, NewRow).
+
+%fillRow(+Board, +Piece, -NewBoard).
+% fillRow(_, 0, Row).
+fillRow(Board, X, Y, Piece, NewBoard) :-
+    setPiece(Board, X, Aux, N),
+    Aux is Y-1,
+    fillRow(Board, X, Aux, Piece, NewBoard).
+
 
 %board
 createBoard(ListOfLists) :-
@@ -56,7 +51,7 @@ createRow([Head | Tail], Size) :-
 createRowP(_, _, 0) :- !.
 createRowP(Piece, [Head|Tail], Size) :-
     Head = Piece,
-    S1 is Size -1,
+    S1 is Size-1,
     createRowP(Piece, Tail, S1).
 
 % getRow3(Piece, Row) :-

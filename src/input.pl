@@ -1,9 +1,4 @@
-% asciitonum(+NumCode, -Num)
-asciitonum(NumCode, Num) :- 
-	boardSize(Size),
-	between(1, Size, NumCode),
-	Num is NumCode.
+getEnter :-
+	get_code(_).
 
-asciitonum(NumCode, Num) :-
-	between(97, 105, NumCode),
-	Num is NumCode - 96.
+clearScreen :- write('\33\[2J').

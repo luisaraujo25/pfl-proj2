@@ -1,8 +1,8 @@
-printPiece(white) :- write(' W ').
+printPiece(piece(white)) :- write(' W ').
 
 printPiece(piece(black)) :- write(' B ').
 
-printPiece(none)  :- write('   ').
+printPiece(piece(none))  :- write('   ').
 
 %printPiece(e):- write(' e ').
 
@@ -34,6 +34,8 @@ printEmpty(N) :-
 	printRow(none), nl.
 
 
+%printName\0
+%Prints in the console the title of the game
 printName :-
 	clearScreen,
 	write(' ----------------------------------------------------------------------------------------------------------'), nl,
@@ -44,9 +46,10 @@ printName :-
 	write('|    1      0 0101101  0     0  010100   1        1     0  1     0  1      0 010100   0101101  0      0    |'), nl,
 	write(' ----------------------------------------------------------------------------------------------------------'), nl, nl.
 
-clearScreen :- write('\33\[2J').
 
 
+%printRules\0
+%Prints in the console the rules of the game
 printRules :-
 	clearScreen,
 	write(' ---------------------------------------------------'), nl,
