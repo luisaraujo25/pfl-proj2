@@ -50,7 +50,7 @@ game_cycle(gameState(TurnNumber, Board, player(Race1), player(Race2))):-
 		)
 		;
 		getTurnColor(0, Player),
-		(	Race1 =:= human	->
+		(	Race2 =:= human	->
 			playerAskMove(Player, Board, Move)
 		 	;
 			choose_move(gameState(TurnNumber, Board, _, _), 1, Move)

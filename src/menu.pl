@@ -39,11 +39,11 @@ playingOptions :-
 
 playingOptionHandler(49) :- start(human,human).
 
-playingOptionHandler(50) :- start(human,bot).
+playingOptionHandler(50) :- start(human, bot).
 
-playingOptionHandler(51) :- start(computer, user).
+playingOptionHandler(51) :- start(bot, human).
 
-playingOptionHandler(52) :- start(computer1, computer2).
+playingOptionHandler(52) :- start(bot1, bot2).
 
 playingOptionHandler(53) :- menu.
 
