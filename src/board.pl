@@ -15,7 +15,10 @@ initial_board(Board) :-
 %fillBoard(+EmptyBoard,+Size, -Board)
 fillBoard(EmptyBoard, Size, Board) :-
     S is Size+1,
-    fillRow(EmptyBoard, 0, 1, 1, S, Board).
+    fillRow(EmptyBoard, 5, 1, 1, S, B1),
+    fillRow(B1, 5, 2, 1, S, B2),
+    fillRow(B2, 6, 8, 1, S, B3),
+    fillRow(B4, 6, 9, 1, S, Board).
 
 %fillRow(+Board, +Piece, -NewBoard).
 fillRow(Board, _, _, Size, Size, Board).
