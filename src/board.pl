@@ -1,5 +1,8 @@
 %the board size in this game is always 9
 boardSize(9).
+chooseBoardSize(Size) :- 
+    write('Choose Board Size'),
+    get_char(Size).
 
 %Pieces
 % piece(white, 'W').
@@ -35,19 +38,41 @@ initial_board(Board) :-
 %movePiece
 
 %board
-createBoard(ListofList) :-
+createBoard(ListOfLists) :-
     boardSize(Size),
-    N is Size-1, 
-    createBoard(N),
-    createRow(List, Size),
-    write(List).
+    createBoard(ListOfList, Size, Size, []).
+
+createBoard(ListOfList, 0, _, ListOfList) :- !.
+createBoard(ListOfList, Size, RowSize, Aux) :-
+    createRow(Row,RowSize),
+    append(Aux, [Row], Aux1),
+    N is Size-1,
+    createBoard(ListOfList, N, RowSize, Aux1).
+
+%get row
+%depois de ter a coluna juntar isso à lista de listas
+
 
 %rows
-createRow(_,0).
+createRow(_,0) :- !.
 createRow([Head | Tail], Size) :-
     Head = null,
-    write(Head), nl,
-    createRow(Tail, Size-1).
+    S is Size-1,
+    createRow(Tail, S).
 
+
+% Create a Row of pieces
+createRowP(_, _, 0) :- !.
+createRowP(Piece, [Head|Tail], Size) :-
+    Head = Piece,
+    S1 is Size -1,
+    createRowP(Piece, Tail, S1).
+
+getRow3(Piece, Row) :-
+    nth0(12, Row, Piece).
+
+getElemenFRow(Num) :-
+    createRowP(piece(white), Row, 9),
+    getRow3(Num, Row).
 
 

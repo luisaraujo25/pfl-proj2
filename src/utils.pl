@@ -27,9 +27,16 @@ replace(Index, List, Elem, NewList) :-
     append(N,[OldElem|T],_),
     append(N,[Elem|T],NewList).
 
-replace2(OLD,LIST,NEW,FINAL) :-
-	append(AUX,[OLD|T],LIST),
-	append(AUX,[NEW|T],FINAL).
+replaceOne(Index, List, Elem, NewList) :-
+    getListUntilIndex(Index,List,Aux,PreList,0)
+.
+
+getListUntilIndex(Index, _, PreList, PreList, Index).
+getListUntilIndex(Index, [H|T], Aux, PreList, Acc) :-
+    Acc1 is Acc+1,
+    append([H], Aux,PreList),
+    getListUntilIndex(Index, T, PreList, Acc1)
+.
 
 %[1,2,3,4,5]
 %[1,2] Acc

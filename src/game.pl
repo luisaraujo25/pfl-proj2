@@ -120,9 +120,10 @@ valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves) :- % Seleciona toda
 
 % vacant(+X, +Y, +Board) 
 vacant(X, Y, Board) :-
-  between(1, 9, X),
-  between(1, 9, Y),
-  getPiece(Board, X, Y, piece(none)). 
+	boardSize(Size),
+	between(1, Size, X),
+	between(1, Size, Y),
+	getPiece(Board, X, Y, piece(none)). 
 %
 
 % TO get possible moves out a determinate pair of coords
@@ -135,24 +136,7 @@ getcoordsMove(IniX, IniY, X, Y) :- X is IniX - 2, Y is IniY +1.
 getcoordsMove(IniX, IniY, X, Y) :- X is IniX + 2, Y is IniY -1.
 getcoordsMove(IniX, IniY, X, Y) :- X is IniX - 2, Y is IniY -1.
 % 
-
-
-% asciitonum(+NumCode, -Num)
-asciitonum(NumCode, Num) :- 
-	between(1, 9, NumCode),
-	Num is NumCode.
-
-asciitonum(NumCode, Num) :-
-	between(97, 105, NumCode),
-	Num is NumCode - 96.
-% 
-
-% choose_move(+GameState, +Level, -Move)
-choose_move(gamestate(TurnNumber, Board, _, _), 1, Move) :-
-	valid_moves(gamestate(TurnNumber, Board, _, _), ListOfMoves),
-	random_member(Move, ListOfMoves).
 	
-
 
 %game_over(+State, -Winner) 
 %game will be over, if all the slots on the top two rows are filled with white pieces
@@ -164,8 +148,9 @@ game_over(gameState(_, Board, _, _), Winner):-
 
 % will check if all the slots on the bottom two rows are filled with black
 game_over(gameState(_, Board, _, _), Winner) :-
+	boardSize(Size),
 	isRowFull(Board, 8, B),
-	isRowFull(Board, 9, B),
+	isRowFull(Board, Size, B),
 	Winner is black.
 
 game_over(_, Winner) :-
@@ -173,6 +158,7 @@ game_over(_, Winner) :-
 
 %isRowFull(+Board, +Row, +Piece)
 isRowFull(Board, Row, Piece) :-
-	between(1, 9, X),
+	boardSize(Size),
+	between(1, Size, X),
 	getPiece(Board, X, Row, Piece).
 

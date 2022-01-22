@@ -1,9 +1,9 @@
-%:- use_module(library(tty)).
+% asciitonum(+NumCode, -Num)
+asciitonum(NumCode, Num) :- 
+	boardSize(Size),
+	between(1, Size, NumCode),
+	Num is NumCode.
 
-%getInput :-
-%tty_clear.
-
-    %with_tty_raw().
-    %get_single_char(Code).
-    %put_byte(Input).
-    
+asciitonum(NumCode, Num) :-
+	between(97, 105, NumCode),
+	Num is NumCode - 96.

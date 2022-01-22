@@ -1,6 +1,6 @@
 printPiece(white) :- write(' W ').
 
-printPiece(black) :- write(' B ').
+printPiece(piece(black)) :- write(' B ').
 
 printPiece(none)  :- write('   ').
 
