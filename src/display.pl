@@ -1,7 +1,7 @@
 printPiece(piece(white)) :- write(' W ').
 
 printPiece(piece(black)) :- write(' B ').
-testSetPiece 
+
 printPiece(piece(none))  :- write('   ').
 
 %printPiece(e):- write(' e ').
@@ -81,8 +81,3 @@ printRules :-
 	backMenu.
 
 % getPiece(Board, X, Y, Piece)
-display_game(gameState(_, Board, _, _)) :-
-	boardSize(Size),	
-	between(0, Size, X), between(0, Size, Y),
-	getPiece(Board, X, Y, Piece), printPiece(Piece),
-	( X =:= Size -> nl).

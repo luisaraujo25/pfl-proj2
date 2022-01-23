@@ -40,76 +40,115 @@ game_cycle(gameState(TurnNumber, Board, _, _)):-
     congratulate(Winner). %% ??
     
 % game_cycle(+GameState)
-game_cycle(gameState(TurnNumber, Board, player(Race1), player(Race2))):-
-	(	(TurnNumber mod 2) =:= 1 ->
-		getTurnColor(1, Player),
-		(	Race1 =:= human	->
-			playerAskMove(Player, Board, Move)
-		 	;
-			choose_move(gameState(TurnNumber, Board, _, _), 1, Move)
-		)
-		;
-		getTurnColor(0, Player),
-		(	Race2 =:= human	->
-			playerAskMove(Player, Board, Move)
-		 	;
-			choose_move(gameState(TurnNumber, Board, _, _), 1, Move)
-		)
-	),
+
+% If it is Player 1 turn, (whites)
+% in case player is human function called for movement is playerAskMove
+% 
+game_cycle(gameState(TurnNumber, Board, player(human), P2)):-
+	TurnNumber mod 2 =:= 1,
 	getTurnColor(TurnNumber, Player),
-	getMove(Player, Race1, Race2),
-    move(gameState(TurnNumber, Board, player(Race1), player(Race2)), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
-    display_game(NewGameState), !,
+	playerAskMove(Player, Board, Move),
+    move(gameState(TurnNumber, Board, player(human), P2), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
+    display_game(NewGameState),
+    game_cycle(NewGameState).
+% 
+% 
+% in case player is computer function called for movement is choose_move
+game_cycle(gameState(TurnNumber, Board, player(computer), P2)):-
+	TurnNumber mod 2 =:= 1,
+	getTurnColor(TurnNumber, Player),
+	choose_move(gameState(TurnNumber, Board, _, _), 1, Move),
+    move(gameState(TurnNumber, Board, player(computer), P2), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
+    display_game(NewGameState),
+    game_cycle(NewGameState).
+% 
+% % If it is Player 2 turn, (blacks)
+% in case player is human function called for movement is playerAskMove
+% 
+game_cycle(gameState(TurnNumber, Board, P1, player(human))):-
+	TurnNumber mod 2 =:= 0,
+	getTurnColor(TurnNumber, Player),
+	playerAskMove(Player, Board, Move),
+    move(gameState(TurnNumber, Board, P1, player(human)), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
+    display_game(NewGameState),
+    game_cycle(NewGameState).
+% 
+% 
+% in case player is computer function called for movement is choose_move
+game_cycle(gameState(TurnNumber, Board, P1, player(computer))):-
+	TurnNumber mod 2 =:= 0,
+	getTurnColor(TurnNumber, Player),
+	choose_move(gameState(TurnNumber, Board, _, _), 1, Move),
+    move(gameState(TurnNumber, Board, P1, player(computer)), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
+    display_game(NewGameState),
     game_cycle(NewGameState).
 % 
 
-getMove(white, human, _) :-
-	playerAskMove(Player, Board, Move).
 
-getMove(black, _, human) :-
-	playerAskMove(Player, Board, Move).
 
-getMove(white, computer, _) :-
-	choose_move(gameState(TurnNumber, Board, _, _), 1, Move).
-
-getMove(black, _, computer) :-
-	choose_move(gameState(TurnNumber, Board, _, _), 1, Move).
+testinput :-
+	get_code(A),get_code(B),get_code(C).
 
 
 % playerAskMove(+GameState, -move(Xi, Yi, Xf, Yf))
 playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
 	getTurnColor(TurnNumber, Player),
-	write('What piece you want to move? (write coordinates)'), nl, write('X: '), get_code(Xinput), nl, write('Y: '), get_code(Yinput), nl,
+	write('What piece you want to move? (write coordinates)'), nl, write('X: '), get_code(Xinput), nl, write('Y: '), get_code(Nl),
+	get_code(Yinput),
+	write(Xinput), nl, get_code(None), write(Yinput), nl,% get_code(None), write(None),nl, 
 	asciitonum(Xinput, Xi),
 	asciitonum(Yinput, Yi),
-	getPiece(Board, Xi, Yi, piece(Color)),
-	(	Color =:= Player ->
-		write('Where you want to move it to? (write coordinates)'), nl, write('X: '), get_code(Xfinput), nl, write('Y: '), get_code(Yfinput), nl,
-		asciitonum(Xfinput, Xf),
-		asciitonum(Yfinput, Yf),
-		valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves),
-		( 	\+member(move(Xi, Yi, Xf, Yf), ListOfMoves) ->
-			write('Not a possible move!'), playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf))
-		)
-		;
-		write('None of your pieces are in that place'), nl,
-		playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf))
-	).
+	write(Xi), nl, write(Yi),nl,
+	getPiece(Board, Xi, Yi, piece(Color)), write(Color), nl,
+	matchingColor(Color, Player, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)).
+	% (	Color =:= Player ->
+	% 	write('Where you want to move it to? (write coordinates)'), nl, write('X: '), get_code(Xfinput), nl, write('Y: '), get_code(Yfinput), nl,
+	% 	asciitonum(Xfinput, Xf),
+	% 	asciitonum(Yfinput, Yf),
+	% 	valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves),
+	% 	( 	\+member(move(Xi, Yi, Xf, Yf), ListOfMoves) ->
+	% 		write('Not a possible move!'), playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf))
+	% 	)
+	% 	;
+	% 	write('None of your pieces are in that place'), nl,
+	% 	playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf))
+	% ).
 % 
+
+matchingColor(Color, Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
+	write('Where you want to move it to? (write coordinates)'), nl, write('X: '), get_code(Xfinput), nl, write('Y: '), get_code(None), nl,
+	get_code(Yfinput), nl,
+	write(Xfinput), nl,write(Yfinput),nl, write(None),nl,
+	asciitonum(Xfinput, Xf),
+	asciitonum(Yfinput, Yf),
+	write(Xf), nl,write(Yf),nl, write(None),nl, 
+	isDestinationValid(Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)).
+
+matchingColor(Color, NotColor, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
+	playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)).
+
+
+isDestinationValid(Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
+	valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves),
+	member(move(Xi, Yi, Xf, Yf), ListOfMoves), write('valid').
+
+isDestinationValid(Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
+	valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves),
+	\+member(move(Xi, Yi, Xf, Yf), ListOfMoves).
+	write('Not a valid move'), nl, get_code(Nl),
+	matchingColor(Color, Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)).
+
 
 
 % move(+GameState, +Move, -NewGameState)
 % moves the Piece on the actual Board, defining the new state of the game
 move(gamestate(TurnNumber, Board, P1, P2), move(Xi, Yi, Xf, Yf), gameState(NewTurnNumber, NewBoard, P1, P2)):-
 	getTurnColor(TurnNumber, Player),
-	valid_moves(gamestate( TurnNumber, Board, _, _), ListMoves),
-	( member(move(Xi, Yi, Xf, Yf), ListMoves) ->
-		setPiece(Board, Xi, Yi, piece(none), Board2),
-		setPiece(Board2, Xf, Yf, piece(Player), NewBoard),
-		NewTurnNumber is TurnNumber + 1
-		;
-		write('Not valid Move')
-	).
+	% valid_moves(gamestate( TurnNumber, Board, _, _), ListMoves),
+	setPiece(Board, Xi, Yi, piece(none), Board2),
+	setPiece(Board2, Xf, Yf, piece(Player), NewBoard),
+	nl,write('moved'), nl,
+	NewTurnNumber is TurnNumber + 1.
 % 
 
 % valid_moves(+GameState, -ListOfMoves)
@@ -118,9 +157,9 @@ valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves) :-
 	getTurnColor(TurnNumber, Player),
 	getPiece(Board, X, Y, piece(Player)),
 	getcoordsMove(X, Y, N_X, N_Y),
-	N_X > 0,
+	N_X > -1,
 	N_X < 10,
-	N_Y > 0,
+	N_Y > -1,
 	N_Y < 10,
 	findall(move(X,Y, N_X, N_Y), vacant(N_X, N_Y, Board), ListOfMoves).
 % 
@@ -175,7 +214,7 @@ isRowFull(Board, Row, Piece) :-
 	getPiece(Board, X, Row, Piece).
 
 display_game(gameState(_, Board, _, _)) :-
-	write('   a  b  c  d  f  g  h  i  '), nl,
+	write('   1  2  3  4  g  h  i  '), nl,
 	display_lines(Board, 1).
 
 display_lines([], _).
@@ -185,7 +224,7 @@ display_line([]).
 display_line([Piece|Tail]) :- printPiece(Piece), display_line(Tail).
 
 % ^Testing
-getGameState(1, gameState(_, [[piece(white), piece(black), piece(none), piece(white)],[piece(none), piece(black), piece(none), piece(white)]], _, _)).
+getGameState(1, gameState(1, [[piece(white), piece(black), piece(none), piece(white)],[piece(none), piece(black), piece(none), piece(white)]], _, _)).
 
 
 

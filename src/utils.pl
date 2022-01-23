@@ -20,8 +20,8 @@ setPiece(Board, X, Y, Piece, NewBoard) :-
 %Returns piece in board's position (X,Y) through Piece.
 %getPiece(+Board, +X, +Y, -Piece)
 getPiece(Board, X, Y, Piece) :-
-    nth0(X, Board, List),
-    nth0(Y, List, Piece).
+    nth0(Y, Board, List),
+    nth0(X, List, Piece). %TRoquei X e Y
 
 
 getRow(Board, Num, Row) :-
@@ -56,8 +56,8 @@ getListSizeAux([_|T], Size, Acc) :-
 %asciitonum(+NumCode, -Num)
 asciitonum(NumCode, Num) :- 
 	boardSize(Size),
-	between(1, Size, NumCode),
-	Num is NumCode.
+	between(49, 57, NumCode),
+	Num is NumCode -49.
 
 asciitonum(NumCode, Num) :-
 	between(97, 105, NumCode),
