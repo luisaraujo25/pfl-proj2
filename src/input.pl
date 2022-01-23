@@ -6,6 +6,7 @@ getEnter :-
 clearScreen :- write('\33\[2J').
 
 %Users have the option of picking different board sizes
-chooseBoardSize(Size) :- 
-    write('Choose Board Size'),
-    get_char(Size).
+chooseBoardSize :- 
+    write('Choose Board Size: '), 
+    read(Size), 
+    assert(boardSize(Size)), !.

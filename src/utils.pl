@@ -36,7 +36,7 @@ getRow(Board, Num, Row) :-
 replace(Index, List, Elem, NewList) :-
     replaceAux(Index, List, Elem, [], NewList).
 
-replaceAux(0, [H|T], Elem, List, FinalList) :-
+replaceAux(0, [_|T], Elem, List, FinalList) :-
     append(List, [Elem], Aux),
     append(Aux,T, FinalList).
 
@@ -60,7 +60,7 @@ getListSizeAux([_|T], Size, Acc) :-
 %"Converts" letters to numbers
 %asciitonum(+NumCode, -Num)
 asciitonum(NumCode, Num) :- 
-	boardSize(Size),
+	% boardSize(Size),
 	between(49, 57, NumCode),
 	Num is NumCode -49.
 

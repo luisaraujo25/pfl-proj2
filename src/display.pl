@@ -65,6 +65,7 @@ printRules :-
 	
 	write('** WINNING CONDITION **'), nl,
 	write('\tIf you manage to place all your stones in the opponent''s starting position, you win the game'), nl,
+	get_code(_),
 	backMenu.
 
 % getPiece(Board, X, Y, Piece)

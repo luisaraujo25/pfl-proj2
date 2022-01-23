@@ -104,3 +104,32 @@ testCreateRow(Row) :-
 %BOARD EXEMPLO: [[1, 0, 2], [0, 2, 2], [0, 0, 1]]
 %BOARD EXEMPLO2: [[1,0],[0,1]]
 % N = [[w,n],[n,b]]
+
+% ^Testing
+getGameState(1, gameState(1, [
+	[piece(none), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	[piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	% [piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black)],
+	% [piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black)],
+	[piece(none), piece(white), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(black), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(black), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(black), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	[piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)]
+], player(human), player(human))).
+
+getBoard([
+	[piece(none), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	[piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	% [piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black)],
+	% [piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black)],
+	[piece(none), piece(white), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(black), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	[piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)]
+]).
