@@ -26,7 +26,8 @@ getPiece(Board, X, Y, Piece) :-
     nth0(X, Board, List),
     nth0(Y, List, Piece). %TRoquei X e Y
 
-
+%Returns the row number Num.
+%getRow(+Board, +Num, -Row)
 getRow(Board, Num, Row) :-
     nth0(Num, Board, Row).
 
@@ -56,6 +57,7 @@ getListSizeAux([_|T], Size, Acc) :-
 	getListSizeAux(T, Size, Acc1).
 
 
+%"Converts" letters to numbers
 %asciitonum(+NumCode, -Num)
 asciitonum(NumCode, Num) :- 
 	boardSize(Size),
@@ -65,32 +67,3 @@ asciitonum(NumCode, Num) :-
 asciitonum(NumCode, Num) :-
 	between(97, 105, NumCode),
 	Num is NumCode - 97.
-
-%[1,2,3,4,5]
-%[1,2] Acc
-%[3 | 4,5]]  -> 
-
-%append([1,2],[3], Lista)
-%append(Lista,[4,5])
-
-
-%BOARD EXEMPLO: [[1, 0, 2], [0, 2, 2], [0, 0, 1]]
-%BOARD EXEMPLO2: [[1,0],[0,1]]
-% N = [[w,n],[n,b]]
-
-
-
-
-/* This is an example of how the board is representented internally
-[
-    [black, black, black, black, black, black, black, black, black],
-    [black, black, black, black, black, black, black, black, black],
-    [none, none, none, none, none, none, none, none, none],
-    [none, none, none, none, none, none, none, none, none],
-    [none, none, none, none, none, none, none, none, none],
-    [none, none, none, none, none, none, none, none, none],
-    [none, none, none, none, none, none, none, none, none],
-    [white, white, white, white, white, white, white, white, white],
-    [white, white, white, white, white, white, white, white, white],
-]
-*/
