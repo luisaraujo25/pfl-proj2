@@ -1,7 +1,6 @@
 %The board size in this game is always 9 (?)
 boardSize(9).
 
-
 %initial_board/1 -> initializes the board with pieces in their initial position
 %initial_board(-Board) 
 initial_board(Board) :-

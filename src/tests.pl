@@ -78,3 +78,29 @@ testCreateRow(Row) :-
 %Result: NewBoard = [[1,2,3],[4,5,6],[7,0,9]].
 %
 %Final result = [[1,2,3],[4,5,6],[7,0,9]].
+
+/* This is an example of how the board is representented internally
+[
+    [black, black, black, black, black, black, black, black, black],
+    [black, black, black, black, black, black, black, black, black],
+    [none, none, none, none, none, none, none, none, none],
+    [none, none, none, none, none, none, none, none, none],
+    [none, none, none, none, none, none, none, none, none],
+    [none, none, none, none, none, none, none, none, none],
+    [none, none, none, none, none, none, none, none, none],
+    [white, white, white, white, white, white, white, white, white],
+    [white, white, white, white, white, white, white, white, white],
+]
+*/
+
+%[1,2,3,4,5]
+%[1,2] Acc
+%[3 | 4,5]]  -> 
+
+%append([1,2],[3], Lista)
+%append(Lista,[4,5])
+
+
+%BOARD EXEMPLO: [[1, 0, 2], [0, 2, 2], [0, 0, 1]]
+%BOARD EXEMPLO2: [[1,0],[0,1]]
+% N = [[w,n],[n,b]]
