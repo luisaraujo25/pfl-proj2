@@ -11,6 +11,7 @@ testSetPiece(NewBoard) :-
 %Testing replace/3
 
 
+%Creating an empty board to test other predicates without using createBoard(ListOfLists) from board.pl
 createEmptyBoard([
     [null,null,null,null,null,null,null,null,null],
     [null,null,null,null,null,null,null,null,null],
@@ -39,22 +40,20 @@ testFillRow(NewBoard) :-
     createEmptyBoard(B),
     fillRow(B, 5, 1, 1, 10, NewBoard)
 .
-
 testFillRow2(NewBoard) :-
     testFillRow(B),
     fillRow(B, 5, 2, 1, 10, NewBoard)
 .
-
 testFillRow3(NewBoard) :-
     testFillRow2(B),
     fillRow(B, 6, 8, 1, 10, NewBoard)
 .
-
 testFillRow4(NewBoard) :-
     testFillRow3(B),
     fillRow(B, 6, 9, 1, 10, NewBoard)
 .
 
+%To check if a row is complete
 check(R) :-
     testFillRow4(B),
     getRow(B,8,R)

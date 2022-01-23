@@ -52,14 +52,6 @@ createRow([Head | Tail], Size) :-
     S is Size-1,
     createRow(Tail, S).
 
-
-% Create a Row of pieces
-createRowP(_, _, 0) :- !.
-createRowP(Piece, [Head|Tail], Size) :-
-    Head = Piece,
-    S1 is Size-1,
-    createRowP(Piece, Tail, S1).
-
 % getRow3(Piece, Row) :-
 %     nth0(12, Row, Piece).
 
