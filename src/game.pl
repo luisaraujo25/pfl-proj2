@@ -10,7 +10,6 @@
 :- include('bot.pl').
 :- include('input.pl').
 :- include('utils.pl').
-:- include('tests.pl').
 
 play :-
 	menu.
@@ -31,7 +30,7 @@ play_game:-
     display_game(GameState),
     game_cycle(GameState).
 
-getTurnColor(2, none).
+getTurnColor(-1, none).
 getTurnColor(Num, white) :- Num mod 2 =:= 1.
 getTurnColor(Num, black) :- Num mod 2 =:= 0.
 
@@ -40,6 +39,7 @@ game_cycle(gameState(TurnNumber, Board, _, _)):-
     game_over(gameState(TurnNumber, Board, _, _), Winner), !,
     congratulate(Winner). %% ??
     
+congratulate(Winner) :- write('You won '), write(Winner), write('!').
 % game_cycle(+GameState)
 
 % If it is Player 1 turn, (whites)
@@ -48,9 +48,10 @@ game_cycle(gameState(TurnNumber, Board, _, _)):-
 game_cycle(gameState(TurnNumber, Board, player(human), P2)):-
 	TurnNumber mod 2 =:= 1,
 	getTurnColor(TurnNumber, Player),
-	playerAskMove(Player, Board, Move),
+	playerAskMove(gameState(TurnNumber, Board, player(human), P2), Move),
     move(gameState(TurnNumber, Board, player(human), P2), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
     display_game(NewGameState),
+	get_code(NL),
     game_cycle(NewGameState).
 % 
 % 
@@ -61,6 +62,7 @@ game_cycle(gameState(TurnNumber, Board, player(computer), P2)):-
 	choose_move(gameState(TurnNumber, Board, _, _), 1, Move),
     move(gameState(TurnNumber, Board, player(computer), P2), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
     display_game(NewGameState),
+	get_code(NL),
     game_cycle(NewGameState).
 % 
 % % If it is Player 2 turn, (blacks)
@@ -69,9 +71,11 @@ game_cycle(gameState(TurnNumber, Board, player(computer), P2)):-
 game_cycle(gameState(TurnNumber, Board, P1, player(human))):-
 	TurnNumber mod 2 =:= 0,
 	getTurnColor(TurnNumber, Player),
-	playerAskMove(Player, Board, Move),
+	playerAskMove(gameState(TurnNumber, Board, P1, player(human)), Move),
+	write('here'),
     move(gameState(TurnNumber, Board, P1, player(human)), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
     display_game(NewGameState),
+	get_code(NL),
     game_cycle(NewGameState).
 % 
 % 
@@ -82,6 +86,7 @@ game_cycle(gameState(TurnNumber, Board, P1, player(computer))):-
 	choose_move(gameState(TurnNumber, Board, _, _), 1, Move),
     move(gameState(TurnNumber, Board, P1, player(computer)), Move, NewGameState), % TurnNumberNext is TurnNumber +1, should be included in move function
     display_game(NewGameState),
+	get_code(NL),
     game_cycle(NewGameState).
 % 
 
@@ -100,7 +105,7 @@ playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
 	asciitonum(Xinput, Xi),
 	asciitonum(Yinput, Yi),
 	write(Xi), nl, write(Yi),nl,
-	getPiece(Board, Xi, Yi, piece(Color)), write(Color), nl,
+	getPiece(Board, Yi, Xi, piece(Color)), write(Color), nl,
 	matchingColor(Color, Player, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)).
 	% (	Color =:= Player ->
 	% 	write('Where you want to move it to? (write coordinates)'), nl, write('X: '), get_code(Xfinput), nl, write('Y: '), get_code(Yfinput), nl,
@@ -126,6 +131,7 @@ matchingColor(Color, Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf,
 	isDestinationValid(Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)).
 
 matchingColor(Color, NotColor, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
+	write('player 2 aqui'), write(Color), write('-'), write(NotColor), write('-'), 
 	playerAskMove(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)).
 
 
@@ -135,7 +141,7 @@ isDestinationValid(Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Y
 
 isDestinationValid(Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
 	valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves),
-	\+member(move(Xi, Yi, Xf, Yf), ListOfMoves).
+	\+member(move(Xi, Yi, Xf, Yf), ListOfMoves),
 	write('Not a valid move'), nl, get_code(Nl),
 	matchingColor(Color, Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)).
 
@@ -143,12 +149,12 @@ isDestinationValid(Color, gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Y
 
 % move(+GameState, +Move, -NewGameState)
 % moves the Piece on the actual Board, defining the new state of the game
-move(gamestate(TurnNumber, Board, P1, P2), move(Xi, Yi, Xf, Yf), gameState(NewTurnNumber, NewBoard, P1, P2)):-
-	getTurnColor(TurnNumber, Player),
+move(gameState(TurnNumber, Board, P1, P2), move(Xi, Yi, Xf, Yf), gameState(NewTurnNumber, NewBoard, P1, P2)):-
+	getTurnColor(TurnNumber, Player), write(Player),
 	% valid_moves(gamestate( TurnNumber, Board, _, _), ListMoves),
-	setPiece(Board, Xi, Yi, piece(none), Board2),
-	setPiece(Board2, Xf, Yf, piece(Player), NewBoard),
-	nl,write('moved'), nl,
+	XiP is Xi +1, YiP is Yi +1, XfP is Xf +1, YfP is Yf +1,
+	setPiece(Board, YiP, XiP, piece(none), Board2),
+	setPiece(Board2, YfP, XfP, piece(Player), NewBoard),
 	NewTurnNumber is TurnNumber + 1.
 % 
 
@@ -156,7 +162,8 @@ move(gamestate(TurnNumber, Board, P1, P2), move(Xi, Yi, Xf, Yf), gameState(NewTu
 % Seleciona todas os Moves possiveis tendo conta qualquer movimento possivel de qualquer peça do jogador
 valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves) :- 
 	getTurnColor(TurnNumber, Player),
-	getPiece(Board, X, Y, piece(Player)),
+	write(Player),
+	getPiece(Board, Y, X, piece(Player)),
 	getcoordsMove(X, Y, N_X, N_Y),
 	N_X > -1,
 	N_X < 10,
@@ -170,9 +177,9 @@ valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves) :-
 % Checks if the position with coords (X,Y) is empty (occupied with piece(none))
 vacant(X, Y, Board) :-
 	boardSize(Size),
-	between(1, Size, X),
-	between(1, Size, Y),
-	getPiece(Board, X, Y, piece(none)). 
+	between(0, Size, X),
+	between(0, Size, Y),
+	getPiece(Board, Y, X, piece(none)). 
 %
 
 % TO get possible moves out a determinate pair of coords
@@ -192,31 +199,50 @@ getcoordsMove(IniX, IniY, X, Y) :- X is IniX - 2, Y is IniY -1.
 %game_over(+State, -Winner) 
 %game will be over, if all the slots on the top two rows are filled with white pieces
 % or if all the slots on the bottom two rows are filled with white pieces
-game_over(gameState(_, Board, _, _), Winner):-
-	isRowFull(Board, 1, W),
-	isRowFull(Board, 2, W),
-	getTurnColor(1, Winner).
+game_over(gameState(TurnNumber, Board, _, _), Winner):-
+	getTurnColor(TurnNumber, white),
+	isRowFull(Board, 0, piece(white)),
+	isRowFull(Board, 1, piece(white)),
+	getTurnColor(TurnNumber, Winner).
 
 % will check if all the slots on the bottom two rows are filled with black
-game_over(gameState(_, Board, _, _), Winner) :-
+game_over(gameState(TurnNumber, Board, _, _), Winner) :-
+	getTurnColor(TurnNumber, white),
 	boardSize(Size),
-	isRowFull(Board, 7, B),
-	isRowFull(Board, Size-1, B),
-	getTurnColor(0, Winner).
+	Size1 is Size -1,
+	Size2 is Size -2,
+	isRowFull(Board, Size2, piece(black)),
+	isRowFull(Board, Size1, piece(black)),
+	getTurnColor(TurnNumber, Winner).
 
-game_over(_, Winner) :-
-	getTurnColor(2, Winner).
+% game_over(_, Winner) :-
+% 	getTurnColor(2, Winner).
 
 %Checks whether or not a row is full of pieces from a single color
 %isRowFull(+Board, +Row, +Piece)
-isRowFull(Board, Row, Piece) :-
-	boardSize(Size-1),
-	between(1, Size-1, X),
-	getPiece(Board, X, Row, Piece).
+% isRowFull(Board, Row, Piece, N)
+isRowFull(Board, Row, piece(Color)) :-
+	boardSize(Size),
+	Size1 is Size -1,
+	between(0, Size1, X), !,
+	write(X),
+	getPiece(Board, X, Row, piece(Color)), write(Color).
+	% N1 is N +1,
+	% isRowFull(Board, Row, Piece, N1).
+
+% isRowFull(Board, Row, Piece) :-
+% 	boardSize(Size-1),
+% 	between(1, Size-1, X),
+% 	getPiece(Board, X, Row, Piece).
 
 display_game(gameState(_, Board, _, _)) :-
-	write('   1  2  3  4  g  h  i  '), nl,
+	% nl, write('   1  2  3  4  5  6  7  '), nl,
+	boardSize(Size),
+	nl, write('   '), print1Line(Size, 1),
 	display_lines(Board, 1).
+
+print1Line(0, _) :- nl, !.
+print1Line(Size, Num) :- write(Num), write('  '), N1 is Num +1, Size1 is Size -1, print1Line(Size1, N1).
 
 display_lines([], _).
 display_lines([Head|Tail], N) :- write(N), write(' '), display_line(Head), nl, N1 is N +1, display_lines(Tail, N1).
@@ -225,7 +251,31 @@ display_line([]).
 display_line([Piece|Tail]) :- printPiece(Piece), display_line(Tail).
 
 % ^Testing
-getGameState(1, gameState(1, [[piece(white), piece(black), piece(none), piece(white)],[piece(none), piece(black), piece(none), piece(white)]], _, _)).
+getGameState(1, gameState(1, [
+	[piece(none), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	[piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	% [piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black)],
+	% [piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black)],
+	[piece(none), piece(white), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(black), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	[piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)]
+], player(human), player(human))).
 
-
+getBoard([
+	[piece(none), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	[piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	% [piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black)],
+	% [piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black), piece(black)],
+	[piece(none), piece(white), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none), piece(none)],
+	[piece(black), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)],
+	[piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white), piece(white)]
+]).
 
