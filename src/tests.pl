@@ -26,8 +26,8 @@ createEmptyBoard([
 
 %Testing initial_board in board.pl
 testInitialBoard(Board) :-
-    initial_board(Board)
-.
+    initial_board(Board).
+    % getBoard(Board).
 
 %Testing fill board
 testFillBoard(Board) :-

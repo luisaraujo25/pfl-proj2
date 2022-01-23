@@ -2,37 +2,24 @@ printPiece(piece(white)) :- write(' W ').
 
 printPiece(piece(black)) :- write(' B ').
 
-printPiece(piece(none))  :- write('   ').
+printPiece(piece(none))  :- write(' . ').
 
 %printPiece(e):- write(' e ').
 
-printRow(Piece) :-
+display_game(gameState(_, Board, _, _)) :-
+	% nl, write('   1  2  3  4  5  6  7  '), nl,
 	boardSize(Size),
-	printRowAux(Piece, Size), nl.
+	nl, write('   '), print1Line(Size, 1),
+	display_lines(Board, 1).
 
-printRowAux(Piece,0).
-printRowAux(Piece,N) :-
-	N>0,
-	N1 is N-1,
-	printRowAux(Piece,N1),
-	printPiece(Piece).
+print1Line(0, _) :- nl, !.
+print1Line(Size, Num) :- write(Num), write('  '), N1 is Num +1, Size1 is Size -1, print1Line(Size1, N1).
 
-printBoard :-
-	clearScreen,
-	boardSize(Size),
-	printRow(white),
-	printRow(white),
-	printEmpty(Size-2),
-	printRow(black),
-	printRow(black).
+display_lines([], _).
+display_lines([Head|Tail], N) :- write(N), write(' '), display_line(Head), nl, N1 is N +1, display_lines(Tail, N1).
 
-printEmpty(0).
-printEmpty(N) :-
-	N>0,
-	N1 is N-1,
-	printEmpty(N1),
-	printRow(none), nl.
-
+display_line([]).
+display_line([Piece|Tail]) :- printPiece(Piece), display_line(Tail).
 
 %printName\0
 %Prints in the console the title of the game

@@ -15,10 +15,10 @@ initial_board(Board) :-
 %fillBoard(+EmptyBoard,+Size, -Board)
 fillBoard(EmptyBoard, Size, Board) :-
     S is Size+1,
-    fillRow(EmptyBoard, piece(white), 1, 1, S, B1),
-    fillRow(B1, piece(white), 2, 1, S, B2),
-    fillRow(B2, piece(black), 8, 1, S, B3),
-    fillRow(B3, piece(black), 9, 1, S, Board).
+    fillRow(EmptyBoard, piece(black), 1, 1, S, B1),
+    fillRow(B1, piece(black), 2, 1, S, B2),
+    fillRow(B2, piece(white), 8, 1, S, B3),
+    fillRow(B3, piece(white), 9, 1, S, Board).
 
 %fillRow(+Board, +Piece, -NewBoard).
 fillRow(Board, _, _, Size, Size, Board) :- !.
@@ -48,7 +48,7 @@ createBoard(ListOfLists, Size, RowSize, Aux) :-
 %createRow(-Row,+Size).
 createRow(_,0) :- !.
 createRow([Head | Tail], Size) :-
-    Head = null,
+    Head = piece(none),
     S is Size-1,
     createRow(Tail, S).
 

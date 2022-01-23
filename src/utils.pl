@@ -2,6 +2,9 @@
 %1 stands for white
 %2 stands for black
 
+sleepTime :-
+    sleep(2).
+
 %Returns the new board after a move is made
 %Test available in tests.pl
 %setPiece(+Board, +X, +Y, +Piece, -NewBoard)
@@ -20,8 +23,8 @@ setPiece(Board, X, Y, Piece, NewBoard) :-
 %Returns piece in board's position (X,Y) through Piece.
 %getPiece(+Board, +X, +Y, -Piece)
 getPiece(Board, X, Y, Piece) :-
-    nth0(Y, Board, List),
-    nth0(X, List, Piece). %TRoquei X e Y
+    nth0(X, Board, List),
+    nth0(Y, List, Piece). %TRoquei X e Y
 
 
 getRow(Board, Num, Row) :-
