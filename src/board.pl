@@ -3,9 +3,9 @@
 boardSize(9).
 
 %initial_board/1 -> initializes the board with pieces in their initial position
-%initial_board(-Board) 
-initial_board(Board) :-
-    boardSize(Size),
+%initial_board(+Size, -Board) 
+initial_board(Size, Board) :-
+    % boardSize(Size),
     createBoard(EmptyBoard),
     fillBoard(EmptyBoard, Size, Board), !.
 

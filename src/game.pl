@@ -23,7 +23,7 @@ play :-
 start(PLAYER1, PLAYER2) :-
 	% chooseBoardSize,
 	boardSize(Size),
-	initial_state(gameState(TurnNumber, Board, player(PLAYER1), player(PLAYER2))),
+	initial_state(Size, gameState(TurnNumber, Board, player(PLAYER1), player(PLAYER2))),
 	% getGameState(1, GameState), %Teste ----
 	display_game(gameState(TurnNumber, Board, player(PLAYER1), player(PLAYER2))),
 	% display_game(GameState), % -- Test
@@ -32,10 +32,10 @@ start(PLAYER1, PLAYER2) :-
 	% game_cycle(GameState). % -- Test
 
 % initial_state(+Size, -GameState)
-initial_state(gameState(TurnNumber, Board, _, _)) :-
+initial_state(Size, gameState(TurnNumber, Board, _, _)) :-
 	TurnNumber is 1,
 	% getBoard(Board).
-	initial_board(Board).
+	initial_board(Size, Board).
 
 
 % According to the turnNumbers gets the player (color) that will make a move
@@ -121,14 +121,14 @@ matchingColor(Color, Color, gameState(TurnNumber, Board, P1, P2), move(Xi, Yi, X
 	isDestinationValid(gameState(TurnNumber, Board, P1, P2), move(Xi, Yi, Xf, Yf)).
 
 % In case the piece doesnt belong to the player, goes back to asking the player for a piece
-matchingColor(Color, NotColor, gameState(TurnNumber, Board, P1, P2), move(Xi, Yi, Xf, Yf)) :-
+matchingColor(Color, NotColor, gameState(TurnNumber, Board, P1, P2), _) :-
 	write('didnt pick the right piece!-('), write(Color), write('=/'),write(NotColor), write(')'), nl, 
 	game_cycle(gameState(TurnNumber, Board, P1, P2)).
 
 
 % Checks if the chosen move is a valid move
 % isDestinationValid(+GameState, + Move)
-isDestinationValid(gameState(TurnNumber, Board, P1, P2), move(Xi, Yi, Xf, Yf)) :-
+isDestinationValid(gameState(TurnNumber, Board, _, _), move(Xi, Yi, Xf, Yf)) :-
 	valid_moves(gameState(TurnNumber, Board, _, _), ListOfMoves),
 	member(move(Xi, Yi, Xf, Yf), ListOfMoves), write('valid').
 
