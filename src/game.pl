@@ -10,7 +10,6 @@
 :- include('bot.pl').
 :- include('input.pl').
 :- include('utils.pl').
-:- include('tests.pl').
 
 play :-
 	menu.
