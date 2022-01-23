@@ -68,4 +68,12 @@ printRules :-
 	get_code(_),
 	backMenu.
 
-% getPiece(Board, X, Y, Piece)
+
+printPlayingOptions :-
+	write('1. USER VS USER'), nl,
+	write('2. USER VS COMPUTER'), nl,
+	write('3. COMPUTER VS USER'), nl,
+	write('4. COMPUTER VS COMPUTER'), nl,
+	write('5. GO BACK TO MAIN MENU'), nl.
+
+invalidInput :- write('Invalid input'), nl.

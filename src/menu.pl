@@ -1,3 +1,5 @@
+%game menu
+%menu/0
 menu :-
 	clearScreen,
 	printName,
@@ -7,6 +9,7 @@ menu :-
 	readInput(Input),
 	menuOptionHandler(Input).
 
+%Read player's input
 readInput(Input) :-
 	get_code(Input).
 
@@ -30,11 +33,7 @@ menuOptionHandler(_) :-
 playingOptions :-
 	clearScreen,
 	printName,
-	write('1. USER VS USER'), nl,
-	write('2. USER VS COMPUTER'), nl,
-	write('3. COMPUTER VS USER'), nl,
-	write('4. COMPUTER VS COMPUTER'), nl,
-	write('5. GO BACK TO MAIN MENU'), nl,
+	printPlayingOptions,
 	get_code(_),
 	readInput(Input),
 	playingOptionHandler(Input).
@@ -54,10 +53,8 @@ playingOptionHandler(52) :- start(computer, computer).
 %OPTION 5
 playingOptionHandler(53) :- menu.
 
+%Other Options
 playingOptionHandler(_) :- invalidInput.
-
-
-invalidInput :- write('Invalid input'), nl.
 
 % RULES
 backMenu :-

@@ -1,4 +1,5 @@
 %The board size in this game is always 9 (?)
+%board(+Size).
 boardSize(9).
 
 %initial_board/1 -> initializes the board with pieces in their initial position
@@ -19,6 +20,7 @@ fillBoard(EmptyBoard, Size, Board) :-
     fillRow(B2, piece(white), 8, 1, S, B3),
     fillRow(B3, piece(white), 9, 1, S, Board).
 
+%Fills a whole row Row with the piece Piece
 %fillRow(+Board, +Piece, -NewBoard).
 fillRow(Board, _, _, Size, Size, Board) :- !.
 fillRow(Board, Piece, X, Acc, Size, NewBoard) :-
@@ -27,7 +29,6 @@ fillRow(Board, Piece, X, Acc, Size, NewBoard) :-
     fillRow(NewB, Piece, X, Acc1, Size, NewBoard).
 
 
-%board
 %createBoard/1 -> Creates an "empty" board (list of lists) filled with nulls
 %createBoard(-ListOfLists)
 createBoard(ListOfLists) :-
@@ -42,7 +43,6 @@ createBoard(ListOfLists, Size, RowSize, Aux) :-
     N is Size-1,
     createBoard(ListOfLists, N, RowSize, Aux1).
 
-%rows
 %createRow/1 -> Creates an empty row (filles with nulls)
 %createRow(-Row,+Size).
 createRow(_,0) :- !.
@@ -51,11 +51,5 @@ createRow([Head | Tail], Size) :-
     S is Size-1,
     createRow(Tail, S).
 
-% getRow3(Piece, Row) :-
-%     nth0(12, Row, Piece).
-
-% getElemenFRow(Num) :-
-%     createRowP(piece(white), Row, 9),
-%     getRow3(Num, Row).
 
 

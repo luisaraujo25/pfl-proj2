@@ -57,8 +57,9 @@ getListSizeAux([_|T], Size, Acc) :-
 	getListSizeAux(T, Size, Acc1).
 
 
-%"Converts" letters to numbers
+%
 %asciitonum(+NumCode, -Num)
+% Convert letters(a-i) to numbers(0-8) and converts input numbers (1-9) to (0-8)
 asciitonum(NumCode, Num) :- 
 	% boardSize(Size),
 	between(49, 57, NumCode),
